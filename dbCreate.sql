@@ -1,9 +1,12 @@
-create database Veterinaria;
-use Veterinaria;
+DROP DATABASE IF EXISTS Veterinaria;
+CREATE DATABASE Veterinaria;
+USE Veterinaria;
 
 CREATE TABLE region (
     id_region INTEGER PRIMARY KEY,
-    nombre_region VARCHAR(100) NOT NULL
+    nombre_region VARCHAR(100) NOT NULL,
+    
+    UNIQUE (nombre_region)
 );
 
 CREATE TABLE comuna (
@@ -12,17 +15,19 @@ CREATE TABLE comuna (
     id_region INTEGER NOT NULL,
     CONSTRAINT fk_comuna_region
         FOREIGN KEY (id_region)
-        REFERENCES region(id_region)
+        REFERENCES region(id_region),
+        
+	UNIQUE (id_region, nombre_comuna)
 );
 
 CREATE TABLE cliente (
     id_cliente INTEGER PRIMARY KEY,
-    rut_cliente VARCHAR(20) UNIQUE,
+    rut_cliente VARCHAR(12) NOT NULL UNIQUE,
     nombre_cliente VARCHAR(100) NOT NULL,
     apellido VARCHAR(100) NOT NULL,
-    telefono_cliente VARCHAR(30) NOT NULL,
-    email_cliente VARCHAR(50),
-    direccion_cliente VARCHAR(50),
+    telefono_cliente VARCHAR(20),
+    email_cliente VARCHAR(120),
+    direccion_cliente VARCHAR(200),
     id_comuna INTEGER NOT NULL,
     CONSTRAINT fk_cliente_comuna
         FOREIGN KEY (id_comuna)
@@ -31,7 +36,9 @@ CREATE TABLE cliente (
 
 CREATE TABLE especie (
     id_especie INTEGER PRIMARY KEY,
-    nombre_especie VARCHAR(100) NOT NULL
+    nombre_especie VARCHAR(100) NOT NULL,
+    
+    UNIQUE (nombre_especie)
 );
 
 CREATE TABLE raza (
@@ -40,7 +47,8 @@ CREATE TABLE raza (
     id_especie INTEGER NOT NULL,
     CONSTRAINT fk_raza_especie
         FOREIGN KEY (id_especie)
-        REFERENCES especie(id_especie)
+        REFERENCES especie(id_especie),
+	UNIQUE (id_especie, nombre_raza)
 );
 
 CREATE TABLE mascota (
@@ -61,13 +69,17 @@ CREATE TABLE mascota (
 CREATE TABLE tipo_atencion (
     id_tipo_atencion INTEGER PRIMARY KEY,
     nombre_tipo_atencion VARCHAR(100) NOT NULL,
-    descripcion VARCHAR(1000)
+    descripcion VARCHAR(300),
+    
+    UNIQUE (nombre_tipo_atencion)
 );
 
 CREATE TABLE cargo (
     id_cargo INTEGER PRIMARY KEY,
     nombre_cargo VARCHAR(100) NOT NULL,
-    descripcion VARCHAR(1000)
+    descripcion VARCHAR(300),
+    
+    UNIQUE (nombre_cargo)
 );
 
 CREATE TABLE sucursal (
@@ -104,14 +116,16 @@ CREATE TABLE sueldo (
     id_empleado INTEGER NOT NULL UNIQUE,
     CONSTRAINT fk_sueldo_empleado
         FOREIGN KEY (id_empleado)
-        REFERENCES empleado(id_empleado)
+        REFERENCES empleado(id_empleado),
+	
+    CHECK (monto > 0)
 );
 
 CREATE TABLE atencion (
     id_atencion INTEGER PRIMARY KEY,
     fecha_hora TIMESTAMP NOT NULL,
-    monto_total NUMERIC(8,2) NOT NULL,
-    observacion VARCHAR(1000),
+    monto_total NUMERIC(12,2) NOT NULL,
+    observacion VARCHAR(500),
     id_mascota INTEGER NOT NULL,
     id_tipo_atencion INTEGER NOT NULL,
     id_sucursal INTEGER NOT NULL,
@@ -127,7 +141,9 @@ CREATE TABLE atencion (
         REFERENCES sucursal(id_sucursal),
     CONSTRAINT fk_atencion_empleado
         FOREIGN KEY (id_empleado)
-        REFERENCES empleado(id_empleado)
+        REFERENCES empleado(id_empleado),
+        
+	CHECK (monto_total >= 0)
 );
 
 CREATE TABLE pago (
@@ -138,13 +154,15 @@ CREATE TABLE pago (
     id_atencion INTEGER NOT NULL UNIQUE,
     CONSTRAINT fk_pago_atencion
         FOREIGN KEY (id_atencion)
-        REFERENCES atencion(id_atencion)
+        REFERENCES atencion(id_atencion),
+        
+	CHECK (monto_pagado >= 0)
 );
 
 CREATE TABLE receta (
     id_receta INTEGER PRIMARY KEY,
     fecha_emision DATE NOT NULL,
-    observacion VARCHAR(1000),
+    observacion VARCHAR(500),
     id_atencion INTEGER NOT NULL UNIQUE,
     CONSTRAINT fk_receta_atencion
         FOREIGN KEY (id_atencion)
@@ -154,7 +172,9 @@ CREATE TABLE receta (
 CREATE TABLE medicamento (
     id_medicamento INTEGER PRIMARY KEY,
     nombre_medicamento VARCHAR(150) NOT NULL,
-    descripcion VARCHAR(300)
+    descripcion VARCHAR(300),
+    
+    UNIQUE (nombre_medicamento)
 );
 
 CREATE TABLE detalle_receta (
@@ -164,7 +184,7 @@ CREATE TABLE detalle_receta (
     dosis VARCHAR(100) NOT NULL,
     frecuencia VARCHAR(100),
     duracion VARCHAR(100),
-    indicacion VARCHAR(1000),
+    indicacion VARCHAR(500),
     CONSTRAINT pk_detalle_receta
         PRIMARY KEY (id_receta, id_medicamento),
     CONSTRAINT fk_detalle_receta_receta
@@ -172,8 +192,7 @@ CREATE TABLE detalle_receta (
         REFERENCES receta(id_receta),
     CONSTRAINT fk_detalle_receta_medicamento
         FOREIGN KEY (id_medicamento)
-        REFERENCES medicamento(id_medicamento)
+        REFERENCES medicamento(id_medicamento),
+        
+	CHECK (cantidad > 0)
 );
-
-
-
