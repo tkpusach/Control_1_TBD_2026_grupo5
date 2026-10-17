@@ -14,7 +14,7 @@ Proyecto de diseño e implementación de una base de datos relacional.
 
 ## Diagrama MER
 
-![Diagrama MER](img/Control_1_TBD_Mer_grupo5.png)
+![Diagrama MER](Control_1_TBD_Mer_grupo5.png)
 
 ## Archivos
 
