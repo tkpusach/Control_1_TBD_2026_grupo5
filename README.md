@@ -2,8 +2,6 @@
 
 ## Base de datos: veterinaria
 
-Proyecto de diseño e implementación de una base de datos relacional.
-
 ## Integrantes
 
 - Leandro Landeros
