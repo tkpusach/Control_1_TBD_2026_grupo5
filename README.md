@@ -1,6 +1,6 @@
 # Control 1 — Grupo 5
 
-## Base de datos para una clínica veterinaria
+## Base de datos: veterinaria
 
 Proyecto de diseño e implementación de una base de datos relacional.
 
