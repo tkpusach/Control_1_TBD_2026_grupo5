@@ -18,7 +18,7 @@ Proyecto de diseño e implementación de una base de datos relacional.
 
 ## Archivos
 
-- [Crear la base de datos](Entrega/dbCreate.sql)
-- [Cargar datos](Entrega/loadData.sql)
-- [Consultas](Entrega/runStatements.sql)
-- [Diccionario de datos](Entrega/Diccionario_de_datos_control_1_grupo5.pdf)
+- [Crear la base de datos](dbCreate.sql)
+- [Cargar datos](loadData.sql)
+- [Consultas](runStatements.sql)
+- [Diccionario de datos](Diccionario_de_datos_control_1_grupo5.pdf)
